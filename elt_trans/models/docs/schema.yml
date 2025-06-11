@@ -1,13 +1,134 @@
+version: 2
 models:
-  - name: bronze_channels
-    description: |
-      This stores all the various channnels used in the sales process.
-    columns:
-      - name: Channel ID
-        description: Unique identifier for each channel
-        tests:
-          - not_null
-          - unique
-      - name: Channel Name
-        description: Name of the channel.
+- name: bronze_channels
+  description: Stores all the various channels used in the sales process.
+  columns:
+  - name: Channel ID
+    description: Unique identifier for each channel
+    tests:
+    - not_null
+    - unique
+  - name: Channel Name
+    description: Name of the channel
 
+
+- name: bronze_geography
+  description: Contains geographic dimension data for sales analytics.
+  columns:
+  - name: Geography Type
+    description: Type of geography (e.g., city, region)
+  - name: geographykey
+    description: Unique identifier for each geography
+    tests:
+    - not_null
+    - unique
+  - name: country
+    description: Country name
+  - name: Continent Name
+    description: Continent the geography belongs to
+
+
+- name: bronze_product
+  description: Stores product-related information.
+  columns:
+  - name: productkey
+    description: Unique identifier for each product
+    tests:
+    - not_null
+    - unique
+  - name: Product Category
+    description: Product category
+  - name: Product Subcategory
+    description: Product subcategory
+  - name: Class Name
+    description: Product class
+  - name: Brand Name
+    description: Brand of the product
+  - name: Unit Cost
+    description: Cost of the unit
+  - name: Unit Price
+    description: Price of the unit
+  - name: Product Name
+    description: Name of the product
+  - name: Product Description
+    description: Description of the product
+  - name: manufacturer
+    description: Product manufacturer
+
+
+- name: bronze_promotion
+  description: Contains information about various promotions.
+  columns:
+  - name: Promotion Name
+    description: Name of the promotion
+  - name: Start Date
+    description: Start date of the promotion
+  - name: End Date
+    description: End date of the promotion
+  - name: Promotion Label
+    description: Label used for promotion
+  - name: Promotion Key
+    description: Unique identifier for each promotion
+    tests:
+    - not_null
+    - unique
+  - name: Discount Percent
+    description: Discount percentage for the promotion
+
+
+- name: bronze_sales
+  description: Stores transactional sales records.
+  columns:
+  - name: geographykey
+    description: Reference to geographic data
+  - name: saleskey
+    description: Unique sales record identifier
+    tests:
+    - not_null
+    - unique
+  - name: date
+    description: Date of the sale
+  - name: channelkey
+    description: Sales channel key
+  - name: storekey
+    description: Store identifier
+  - name: productkey
+    description: Product sold
+  - name: promotionkey
+    description: Associated promotion
+  - name: Unit Cost
+    description: Unit cost at the time of sale
+  - name: Unit Price
+    description: Unit price at the time of sale
+  - name: Sales Quantity
+    description: Number of units sold
+  - name: Return Quantity
+    description: Quantity returned
+  - name: dateclean
+    description: Cleaned transaction date
+  - name: Discount Quantity
+    description: Discounted quantity
+
+
+- name: bronze_stores
+  description: Information about the various stores.
+  columns:
+  - name: Employee Count
+    description: Number of employees in the store
+  - name: Store Name
+    description: Name of the store
+  - name: status
+    description: Current status of the store
+  - name: Close Reason
+    description: Reason for closure (if closed)
+  - name: geographykey
+    description: Reference to geographic key
+  - name: storekey
+    description: Store identifier
+    tests:
+    - not_null
+    - unique
+  - name: Store Type
+    description: Type of store (e.g., at different regions)
+  - name: Selling Area Size
+    description: Size of the selling area in square units
