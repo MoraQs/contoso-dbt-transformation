@@ -1,0 +1,6 @@
+# Ignore dbt project files
+target/
+dbt_packages/
+logs/
+dbt-env/
+.env

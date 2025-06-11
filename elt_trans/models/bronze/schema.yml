@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: public
+    tables:
+      - name: channels
+      - name: geography
+      - name: product
+      - name: promotion
+      - name: sales
+      - name: stores

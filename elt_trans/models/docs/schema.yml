@@ -1,0 +1,13 @@
+models:
+  - name: bronze_channels
+    description: |
+      This stores all the various channnels used in the sales process.
+    columns:
+      - name: Channel ID
+        description: Unique identifier for each channel
+        tests:
+          - not_null
+          - unique
+      - name: Channel Name
+        description: Name of the channel.
+
