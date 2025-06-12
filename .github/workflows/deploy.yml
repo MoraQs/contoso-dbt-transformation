@@ -34,23 +34,6 @@ jobs:
           pip install -r requirements.txt
         working-directory: elt_trans
 
-      - name: Create dbt profile from secrets
-        run: |
-          mkdir -p .dbt
-          echo "elt_trans:" > .dbt/profiles.yml
-          echo "  target: prod" >> .dbt/profiles.yml
-          echo "  outputs:" >> .dbt/profiles.yml
-          echo "    prod:" >> .dbt/profiles.yml
-          echo "      type: postgres" >> .dbt/profiles.yml
-          echo "      host: $PG_HOST" >> .dbt/profiles.yml
-          echo "      port: $PG_PORT" >> .dbt/profiles.yml
-          echo "      user: $PG_USER" >> .dbt/profiles.yml
-          echo "      password: $PG_PASSWORD" >> .dbt/profiles.yml
-          echo "      dbname: $PG_DBNAME" >> .dbt/profiles.yml
-          echo "      schema: $PG_SCHEMA" >> .dbt/profiles.yml
-          echo "      threads: 4" >> .dbt/profiles.yml
-        working-directory: elt_trans
-
       - name: Run dbt (prod)
         run: |
           dbt debug --target prod
