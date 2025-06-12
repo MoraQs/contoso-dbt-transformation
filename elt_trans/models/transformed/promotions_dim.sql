@@ -5,4 +5,4 @@ select
 	"Start Date"::date as "startDate",
 	"End Date"::date as "endDate"
 from 
-    {{ref('bronze_promotion')}}
+    {{ref('stg_promotion')}}

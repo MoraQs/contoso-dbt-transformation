@@ -4,4 +4,4 @@ select
 	"Continent Name" as "continentName",
 	country
 from
-    {{ref('bronze_geography')}}
+    {{ref('stg_geography')}}

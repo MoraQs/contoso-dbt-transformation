@@ -8,6 +8,6 @@ select
 	sto."Employee Count" as "NumberOfEmployee",
 	sto."Selling Area Size" as "sellingAreaSize"
 from
-	{{ref('bronze_stores')}} as sto
-left join {{ref('bronze_geography')}} as geo
+	{{ref('stg_stores')}} as sto
+left join {{ref('stg_geography')}} as geo
 	on sto.geographykey = geo.geographykey

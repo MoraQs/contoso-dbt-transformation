@@ -1,7 +1,7 @@
 with cte_sold_product_id as (
 	select
 		productkey
-	from {{ref('bronze_sales')}}
+	from {{ref('stg_sales')}}
 	group by productkey	
 ),
 
@@ -16,7 +16,7 @@ cte_all_products as(
 		"Class Name" as "className",
 		manufacturer
 	from
-		{{ref('bronze_product')}}
+		{{ref('stg_product')}}
 )
 
 select * from cte_all_products where "productKey" in (select productkey from cte_sold_product_id)

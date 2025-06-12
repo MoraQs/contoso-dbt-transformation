@@ -1,0 +1,58 @@
+name: Deploy dbt to Prod
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    env:
+      PG_HOST: ${{ secrets.PG_PROD_HOST }}
+      PG_PORT: ${{ secrets.PG_PROD_PORT }}
+      PG_USER: ${{ secrets.PG_PROD_USER }}
+      PG_PASSWORD: ${{ secrets.PG_PROD_PASSWORD }}
+      PG_DBNAME: ${{ secrets.PG_PROD_DBNAME }}
+      PG_SCHEMA: ${{ secrets.PG_PROD_SCHEMA }}
+      DBT_PROFILES_DIR: ${{ github.workspace }}/.dbt
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        working-directory: elt_trans
+
+      - name: Create dbt profile from secrets
+        run: |
+          mkdir -p .dbt
+          echo "elt_trans:" > .dbt/profiles.yml
+          echo "  target: prod" >> .dbt/profiles.yml
+          echo "  outputs:" >> .dbt/profiles.yml
+          echo "    prod:" >> .dbt/profiles.yml
+          echo "      type: postgres" >> .dbt/profiles.yml
+          echo "      host: $PG_HOST" >> .dbt/profiles.yml
+          echo "      port: $PG_PORT" >> .dbt/profiles.yml
+          echo "      user: $PG_USER" >> .dbt/profiles.yml
+          echo "      password: $PG_PASSWORD" >> .dbt/profiles.yml
+          echo "      dbname: $PG_DBNAME" >> .dbt/profiles.yml
+          echo "      schema: $PG_SCHEMA" >> .dbt/profiles.yml
+          echo "      threads: 4" >> .dbt/profiles.yml
+        working-directory: elt_trans
+
+      - name: Run dbt (prod)
+        run: |
+          dbt debug --target prod
+          dbt run --target prod
+        working-directory: elt_trans

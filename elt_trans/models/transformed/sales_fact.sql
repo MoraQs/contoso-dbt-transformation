@@ -11,4 +11,4 @@ select
 	"Unit Cost" * ("Sales Quantity" - "Return Quantity" - "Discount Quantity") as net_cost_amount,
 	"Unit Price" * ("Sales Quantity" - "Return Quantity" - "Discount Quantity") as net_sales_amount
 from 
-    {{ref('bronze_sales')}}
+    {{ref('stg_sales')}}
