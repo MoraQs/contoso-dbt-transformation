@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/*
   workflow_dispatch:
 
 jobs:
@@ -28,6 +27,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('elt_trans/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -38,4 +45,5 @@ jobs:
         run: |
           dbt debug --target prod
           dbt run --target prod
+          dbt test --target prod
         working-directory: elt_trans
